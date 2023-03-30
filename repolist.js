@@ -28,8 +28,11 @@ const writefile=(topic,repo,data)=>{
    }
    else{
      
-     const file = xlsx.readFile(`${topic}.xlsx`)
-      xlsx.utils.book_append_sheet(file,data,repo)
+     const wb = xlsx.readFile(`${topic}.xlsx`)
+     let newWs=xlsx.utils.json_to_sheet(data);
+      xlsx.utils.book_append_sheet(wb,newWs,repo);
+      xlsx.writeFile(wb,`${topic}.xlsx`);
+
 
    }
     
@@ -51,7 +54,11 @@ const  repolistpage=async (url,topic)=>{
 
        let repolink=baseurl+link;      
       const data= await fetchissue(repolink);
+
       writefile(topic,reponame,data)
+
+      console.log("topic_name->"+topic+" reponame->"+reponame);
+      console.log('\n');
         
     }
     
